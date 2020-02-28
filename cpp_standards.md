@@ -4,11 +4,9 @@ Master reference tag : [cpp]
 
 [cpp.iwyu]
 
+Include What You Use.
+
 https://docs.unrealengine.com/en-US/Programming/BuildTools/UnrealBuildTool/IWYU/index.html
-
-[cpp.naming]
-
-TODO
 
 [cpp.impl.incl]
 
@@ -39,7 +37,20 @@ Order should be taken care of by clang-format.
     class ForwardDeclaration1; // Forward declarations
     struct ForwardDeclaration1;
 
+    DECLARE_DELEGATE( DelegateName ); // Delegates
+
+    struct FMyStruct // Types
+    {
+
+    };
+
+[cpp.incl.unused]
+
+To reduce compilation times, don't keep unused includes.
+
 [cpp.header.forward_decl]
+
+Forward declare classes and structs as much as possible instead of including their header files, to reduce compilation times.
 
 Declare the forward declarations only under the includes, not where they are used.
 
@@ -97,6 +108,8 @@ Exceptions are for replicated functions, which must be written below the replica
 	bool WantsToSprint = false;
 	UFUNCTION()
 	void OnRep_WantsToSprint();
+
+Don't move functions around when you add or remove constness, or when you add the `UFUNCTION` macro. This helps code diffs to be minimal.
 
 [cpp.header.order.cache]
 
@@ -288,6 +301,12 @@ If possible, use TOptional, instead of the pattern "return a bool and update or 
 
         return GetActorLocation() + GetActorForwardVector() * 1000.0f;
     }
+
+[cpp.return.rvo]
+
+:TODO:
+
+https://www.wikiwand.com/en/Copy_elision
 
 [cpp.comments]
 
@@ -542,3 +561,35 @@ Define constants using `constexpr` and `static`.
 
     static constexpr FName Name( TEXT( "ConstantName" ) );
 
+[cpp.types]
+
+Use portable aliases types for C++ types:
+
+* bool for boolean values (never assume the size of bool). BOOL will not compile.
+* TCHAR for a character (never assume the size of TCHAR).
+* uint8 for unsigned bytes (1 byte).
+* int8 for signed bytes (1 byte).
+* uint16 for unsigned "shorts" (2 bytes).
+* int1 for signed "shorts" (2 bytes).
+* uint32 for unsigned ints (4 bytes).
+* int32 for signed ints (4 bytes).
+* uint64 for unsigned "quad words" (8 bytes).
+* int64 for signed "quad words" (8 bytes).
+* float for single precision floating point (4 bytes).
+* double for double precision floating point (8 bytes).
+
+[cpp.nullptr]
+
+Use `nullptr` and not `NULL`.
+https://en.cppreference.com/w/cpp/language/nullptr
+
+[cpp.text]
+
+Encompass all string literal with the `TEXT` macro to avoid string conversion when using `FString`
+
+[cpp.cast]
+
+* Don't use C-style casts. Use `static_cast`.
+* Use the unreal `Cast` function to cast `UObject` pointers.
+* Use `const_cast` only when you have to
+* If you need to use `reinterpret_cast`, something is probably wrong.

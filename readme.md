@@ -4,6 +4,7 @@ Coding standards to use in our UE4 projects.
 
 This document will cover 
 * [Code formatting](code_formatting.md)
+* [C++ Naming Convention](cpp_naming_convention.md)
 * [C++ standards](cpp_standards.md)
 * [Asset conventions](asset_conventions.md)
 
