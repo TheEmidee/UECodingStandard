@@ -1,18 +1,16 @@
 # C++ Standards
 
-Master reference tag : [cpp]
-
-[cpp.iwyu]
+## [cpp.iwyu]
 
 Include What You Use.
 
 https://docs.unrealengine.com/en-US/Programming/BuildTools/UnrealBuildTool/IWYU/index.html
 
-[cpp.warnings]
+## [cpp.warnings]
 
 The project must compile without any errors (obviously) and any warnings.
 
-[cpp.impl.incl]
+## [cpp.impl.incl]
 
 Order should be taken care of by clang-format.
 
@@ -24,7 +22,7 @@ Order should be taken care of by clang-format.
     #include "GameHeader1.h" // Project headers using quotes
     #include "GameHeader2.h"
 
-[cpp.header.incl]
+## [cpp.header.incl]
 
 Order should be taken care of by clang-format.
 
@@ -48,11 +46,11 @@ Order should be taken care of by clang-format.
 
     };
 
-[cpp.incl.unused]
+## [cpp.incl.unused]
 
 To reduce compilation times, don't keep unused includes.
 
-[cpp.header.forward_decl]
+## [cpp.header.forward_decl]
 
 Forward declare classes and structs as much as possible instead of including their header files, to reduce compilation times.
 
@@ -60,13 +58,13 @@ Declare the forward declarations only under the includes, not where they are use
 
 You can also forward declare enums.
 
-[cpp.header.no_impl]
+## [cpp.header.no_impl]
 
 Don't implement class functions in the headers. Do that in the implementation file. This allows to avoid recompiling the code which is dependent on that header when the function implementation changes.
 
 The exception are inlined functions.
 
-[cpp.header.inline]
+## [cpp.header.inline]
 
 Don't use the `FORCEINLINE` macro on the function declaration, but on the function implementation.
 
@@ -86,7 +84,7 @@ A general usage for inline functions are getters / setters.
         return true;
     }
 
-[cpp.header.visibility]
+## [cpp.header.visibility]
 
 Specify the visibility after the `GENERATED_BODY` macro.
 
@@ -98,7 +96,7 @@ Order the visibility of your class members as following:
 
 Don't interleave visibilities inside a class definition.
 
-[cpp.header.order]
+## [cpp.header.order]
 
 For each visibility, put in order:
 
@@ -115,7 +113,7 @@ Exceptions are for replicated functions, which must be written below the replica
 
 Don't move functions around when you add or remove constness, or when you add the `UFUNCTION` macro. This helps code diffs to be minimal.
 
-[cpp.header.order.cache]
+## [cpp.header.order.cache]
 
 * Try to order data members with cache and alignment in mind.
 For ex grouping similar types will minimize the internal padding the compiler will add.
@@ -123,11 +121,11 @@ For ex grouping similar types will minimize the internal padding the compiler wi
 * General rule of thumb: sort in descending order by size.
 * Write booleans as `uint8 Foo : 1;` to store them using only one byte.
 
-[cpp.header.ctor.default]
+## [cpp.header.ctor.default]
 
 Don't write an empty default constructor in the class header. `GENERATED_BODY` generates already one.
 
-[cpp.header.ctor.explicit]
+## [cpp.header.ctor.explicit]
 
 Mark constructors which accept a single argument as explicit to avoid unintended implicit type conversions.
 
@@ -136,18 +134,18 @@ Mark constructors which accept a single argument as explicit to avoid unintended
         explicit AMyClass( int argument );
     };
 
-[cpp.header.dtor.default]
+## [cpp.header.dtor.default]
 
 Don't write empty destructor. Add the default keyword or remove it.
 	
 Respect the rule of 3/5/0 http://en.cppreference.com/w/cpp/language/rule_of_three
 
-[cpp.header.virtual]
+## [cpp.header.virtual]
 
 * Don't explicitly mark up overriden methods with the `virtual` keyword.
 * Do explicitely mark up overriden methods with the `override` keyword.
 * Don't use the `final` specifier.
-* If you need to declare a destructor, make it `virtual`. See `[cpp.header.dtor.default]`
+## * If you need to declare a destructor, make it `virtual`. See `[cpp.header.dtor.default]`
 * Group overridden functions by the class that first defined them using begin/end comments. This allows to quickly know which parent class declared the functions.
 
 <!-- -->
@@ -159,7 +157,7 @@ Respect the rule of 3/5/0 http://en.cppreference.com/w/cpp/language/rule_of_thre
 
     virtual void Kill();
 
-[cpp.header.gc]
+## [cpp.header.gc]
 
 Never, ever, use naked pointers to class inheriting from `UObject`. 
 
@@ -167,7 +165,7 @@ Use a `UPROPERTY` for objects the class owns, or a smart pointer (`TWeakObjectPt
 
 https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/SmartPointerLibrary/
 
-[cpp.header.uproperty]
+## [cpp.header.uproperty]
 
 Only use the unreal property specifiers you need. Don't expose the properties to blueprints if you don't need to.
 
@@ -180,19 +178,19 @@ Some tools to help write them done:
 * UE4 Intellisense https://marketplace.visualstudio.com/items?itemName=RxCompiLe.UE4Intellisense
 * SpecifierTool https://marketplace.visualstudio.com/items?itemName=patience2012.SpecifierTool
 
-[cpp.namespace]
+## [cpp.namespace]
 
 Don't use namespaces as UnrealHeaderTool does not support them.
 
 But you can use private namespace in the **implementation files** to wrap translation-unit local free functions. Also mark them as static to enforce internal only linkage.
 
-[cpp.auto]
+## [cpp.auto]
 
 Use auto everywhere you can, except in functions you override from the engine for which you kept the implementation.
 
 This allows to type less code for types with lengthy names (like templates), forces an initialization of the variable, and may reduce the amount of code to update if you change a variable type.
 
-[cpp.auto.single_assignation]
+## [cpp.auto.single_assignation]
 
 An exception to the always auto rule is to avoid assigning a member twice when only one assignation could be done.
 
@@ -211,13 +209,13 @@ An exception to the always auto rule is to avoid assigning a member twice when o
         result = 0.0f;
     }
 
-[cpp.auto.qualifier]
+## [cpp.auto.qualifier]
 
 ALWAYS qualify the auto variables with the correct qualifiers (const or * or & ).
 
 auto does not deduce references or constness, so do it for every qualifiers, even for those handled by auto.
 
-[cpp.init.if]
+## [cpp.init.if]
 
 Use initializer in _if_ statements to restrict the scope of the variables used.
 
@@ -229,11 +227,11 @@ Use initializer in _if_ statements to restrict the scope of the variables used.
         }
 	}
 
-[cpp.init.class_member]
+## [cpp.init.class_member]
 
 Don't initialize class members in the header file. Do it in the class constructor. This allows all initialization to happen at the same place.
 
-[cpp.init.ctor]
+## [cpp.init.ctor]
 
 Initialize class members in the constructor initialization list, not using assignments in the constructor body.
 
@@ -252,7 +250,7 @@ Initialize the members in the order they are declared in the header.
         Member2( 1.0f )
     {}
 
-[cpp.init.lambda]
+## [cpp.init.lambda]
 
 You can initialize members using a self calling lambda. This is useful to initialize local members with a complicated logic:
 
@@ -267,7 +265,7 @@ You can initialize members using a self calling lambda. This is useful to initia
 
 https://docs.unrealengine.com/en-US/Programming/Development/CodingStandard/#lambdasandanonymousfunctions
 
-[cpp.enum]
+## [cpp.enum]
 
 Use typed enumerations instead of old C enums or `TEnumAsByte`
 
@@ -281,7 +279,7 @@ You can also forward declare them instead of including the header they are decla
 
 https://docs.unrealengine.com/en-US/Programming/Development/CodingStandard/#strongly-typedenums
 
-[cpp.const]
+## [cpp.const]
 
 Use the `const` keyword everywhere you can. Constness correctness if very important: this avoids some bugs, and can lead to some optimizations by the compiler toolchain.
 
@@ -292,7 +290,7 @@ Never use `const` on a return type, as this inhibits move semantics for complex 
 https://docs.unrealengine.com/en-US/Programming/Development/CodingStandard/index.html#constcorrectness
 https://www.cprogramming.com/tutorial/const_correctness.html
 
-[cpp.return.early]
+## [cpp.return.early]
 
 Use early return when possible in functions, to reduce nesting.
 
@@ -306,7 +304,7 @@ Use early return when possible in functions, to reduce nesting.
         // Do stuff
     }
 
-[cpp.return.optional]
+## [cpp.return.optional]
 
 If possible, use TOptional, instead of the pattern "return a bool and update or not a reference"
 
@@ -320,7 +318,7 @@ If possible, use TOptional, instead of the pattern "return a bool and update or 
         return GetActorLocation() + GetActorForwardVector() * 1000.0f;
     }
 
-[cpp.return.rvo]
+## [cpp.return.rvo]
 
 It's acceptable to return some complex types by copy to take advantage of Return Value Optimization ( `RVO` ) and Named Return Value Optimization (`NRVO`).
 
@@ -333,7 +331,7 @@ See the implementation of `AActor::GetActorLocation`:
 		return TemplateGetActorLocation(RootComponent);
 	}
 
-[cpp.comments]
+## [cpp.comments]
 
 Use // to comment the code, not /*  */
 
@@ -347,16 +345,16 @@ Don't use useless comments. The code should be self-explanatory. If not possible
     // :HACK: Description
     // :TODO: Description
 
-[cpp.globals]
+## [cpp.globals]
 
 Don't use global members. They don't play well with HotReload or LiveCoding.
 
 Exceptions:
 
-* static variables which can be computed at compile time and are expensive to initialize (FName, FGameplayTag for example). See [cpp.constants]
+* static variables which can be computed at compile time and are expensive to initialize (FName, FGameplayTag for example). See ## [cpp.constants]
 * UE console commands or console variables
 
-[cpp.containers.alloc]
+## [cpp.containers.alloc]
 
 You can specifiy the allocator a container will use. Use this as an advantage to allocate memory on the stack instead of on the heap:
 
@@ -377,11 +375,11 @@ You can expose the allocator as a template parameter to allow the caller to deci
     template< class ALLOCATOR_TYPE >
 	void GetComponents( TArray<const UActorComponent*, ALLOCATOR_TYPE> & components ) const;
 
-[cpp.containers.reset]
+## [cpp.containers.reset]
 
 Use Reset instead of Empty, to avoid deallocating memory.
 
-[cpp.hardware.cache]
+## [cpp.hardware.cache]
 
 Be mindful of cache access and plan your memory access accordingly
 
@@ -408,7 +406,7 @@ Some general tips
 - in classes put related data together, group them by algorithm/logic access
 - be mindful of the invisible packing the compiler will do behind your back     don't intermingle bool's or small types willy nilly with bigger ones etc
 
-[cpp.markup.engine]
+## [cpp.markup.engine]
 
 When overriding some part of a function from the engine, surround the changes with a specific comment markup to help notice where the change takes place.
 
@@ -426,7 +424,7 @@ If code is deleted rather than modified, discuss with lead the right approach, b
 
 You can have the new code respect our naming convention, but keep the original naming convention / indentation/ formatting in the code kept from the engine.
 
-[cpp.markup.preproc_define]
+## [cpp.markup.preproc_define]
 
 If you must use conditional preprocessor defines, don't indent the #if / #elif / #endif directives.
 But keep the normal indentation in the code inside those directives.
@@ -442,7 +440,7 @@ But keep the normal indentation in the code inside those directives.
         }
     }
 
-[cpp.asserts]
+## [cpp.asserts]
 
 Don't use *check* related functions, unless you have VERY good reasons. This will crash the editor if you play the game in it.
 
@@ -459,23 +457,23 @@ You can even use *ensure* functions in if statements:
 
 See https://docs.unrealengine.com/en-US/Programming/Assertions/index.html
 
-[cpp.super]
+## [cpp.super]
 
 Always call _Super::Function_ in overriden engine functions(BeginPlay / Tick / etc... )
 
 If you must not, comment the call an explain why
 
-[cpp.lambda]
+## [cpp.lambda]
 
 Use lambda in functions to avoid polluting the class with helper functions.
 
 They are also useful when you need to pass a predicate to a function, or to bind a delegate.
 
-[cpp.lambda.dangling]
+## [cpp.lambda.dangling]
 
 Be careful of the captured objects. They may be destroyed before the lambda gets called.
 
-[cpp.lambda.this] 
+## [cpp.lambda.this] 
 
 Don't capture `this`!
 
@@ -486,7 +484,7 @@ Instead use the named captures to cherry pick
 	    // LocalCopy available irregardless of the fate of parent
 	};
 
-[cpp.lambda.=&] 
+## [cpp.lambda.=&] 
 
 Avoid capturing everything by value or worse, by reference!
 
@@ -495,7 +493,7 @@ Avoid capturing everything by value or worse, by reference!
 	    // HERE BE DRAGONS!
 	};
 
-[cpp.lambda.auto] 
+## [cpp.lambda.auto] 
 
 The type deduction for the captures are quite convoluted
 * by reference: uses template rules; will preserve `const` and `&`
@@ -515,7 +513,7 @@ The type deduction for the captures are quite convoluted
         // NotReference => `int`
     };
 
-[cpp.function.args.type]
+## [cpp.function.args.type]
 
 Pass complex types by `const reference` to avoid copies of the objects and keep the object immutability.
 
@@ -525,7 +523,7 @@ Do NOT use the move operator `&&` unless you know what you're doing. This is use
 
 https://scottmeyers.blogspot.com/2013/05/c14-lambdas-and-perfect-forwarding.html
 
-[cpp.function.args.default]
+## [cpp.function.args.default]
 
 If the function defines default arguments, keep them and comment them in the implementation file.
 
@@ -533,7 +531,7 @@ If the function defines default arguments, keep them and comment them in the imp
     {
     }
 
-[cpp.function.args.unused]
+## [cpp.function.args.unused]
 
 If the function body does not use some arguments of the function, comment the function argument:
 
@@ -544,7 +542,7 @@ If the function body does not use some arguments of the function, comment the fu
             : 0.0f;
     }
 
-[cpp.function.args.readability]
+## [cpp.function.args.readability]
 
 If possible use `typedefs` or `enums` instead of booleans or integers to give more meaning to the function arguments:
 
@@ -572,13 +570,13 @@ Avoid using too many arguments in a function. Better combine all the arguments i
 
 If the function is private, it's also OK to split it in multiple functions. Splitting a public function tends to make the class interface too complicated to use.
 
-[cpp.operators]
+## [cpp.operators]
 
 Implement relation operators using the free binary form as it provides the most flexibility with operands order and usage.
 
-If it needs to access private members, make it `friend` and respect inlining. See `[cpp.header.inline]`
+## If it needs to access private members, make it `friend` and respect inlining. See `[cpp.header.inline]`
 
-[cpp.operators.comparison]
+## [cpp.operators.comparison]
 
 All comparison operators can be expressed with only `==` and `<`.
 
@@ -592,13 +590,13 @@ All comparison operators can be expressed with only `==` and `<`.
         return !operator==( other );
     }
 
-[cpp.constants]
+## [cpp.constants]
 
 Define constants using `constexpr` and `static`.
 
     static constexpr FName Name( TEXT( "ConstantName" ) );
 
-[cpp.types]
+## [cpp.types]
 
 Use portable aliases types for C++ types:
 
@@ -615,38 +613,38 @@ Use portable aliases types for C++ types:
 * float for single precision floating point (4 bytes).
 * double for double precision floating point (8 bytes).
 
-[cpp.nullptr]
+## [cpp.nullptr]
 
 Use `nullptr` and not `NULL`.
 
 https://en.cppreference.com/w/cpp/language/nullptr
 https://docs.unrealengine.com/en-US/Programming/Development/CodingStandard/#nullptr
 
-[cpp.text]
+## [cpp.text]
 
 Encompass all string literal with the `TEXT` macro to avoid string conversion when using `FString`
 
-[cpp.cast]
+## [cpp.cast]
 
 * Don't use C-style casts. Use `static_cast`.
 * Use the unreal `Cast` function to cast `UObject` pointers.
 * Use `const_cast` only when you have to
 * If you need to use `reinterpret_cast`, something is probably wrong.
 
-[cpp.struct]
+## [cpp.struct]
 
 Use structures as data containers only. 
 
 They shouldn't contain any business logic beyond simple validation or need any destructors, because it's not possible to add the `UFUNCTION` macro on functions of a structure, to expose them to the blueprint world.
 
-[cpp.statements.switch]
+## [cpp.statements.switch]
 
 * Always use a `default` statement.
 * Always `break` each `case`. If you need a fall-through from a case to the next one, indicate it with a comment.
 
 See [cf.statements.switch]
 
-[cpp.statements.forranged]
+## [cpp.statements.forranged]
 
 Use for-ranged loops instead of the traditional index loop. This helps make code more readable.
 
