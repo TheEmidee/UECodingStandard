@@ -8,6 +8,10 @@ Include What You Use.
 
 https://docs.unrealengine.com/en-US/Programming/BuildTools/UnrealBuildTool/IWYU/index.html
 
+[cpp.warnings]
+
+The project must compile without any errors (obviously) and any warnings.
+
 [cpp.impl.incl]
 
 Order should be taken care of by clang-format.
@@ -261,6 +265,8 @@ You can initialize members using a self calling lambda. This is useful to initia
             return result;
         }();
 
+https://docs.unrealengine.com/en-US/Programming/Development/CodingStandard/#lambdasandanonymousfunctions
+
 [cpp.enum]
 
 Use typed enumerations instead of old C enums or `TEnumAsByte`
@@ -273,9 +279,18 @@ Use typed enumerations instead of old C enums or `TEnumAsByte`
 
 You can also forward declare them instead of including the header they are declared in.
 
+https://docs.unrealengine.com/en-US/Programming/Development/CodingStandard/#strongly-typedenums
+
 [cpp.const]
 
-TODO
+Use the `const` keyword everywhere you can. Constness correctness if very important: this avoids some bugs, and can lead to some optimizations by the compiler toolchain.
+
+Use `const` on immutable variables or function arguments, on functions which don't modify the state of the class, to iterate over a collection you don't want to update, etc...
+
+Never use `const` on a return type, as this inhibits move semantics for complex types, and will give compile warnings for built-in types. This rule only applies to the return type itself, not the target type of a pointer or reference being returned. 
+
+https://docs.unrealengine.com/en-US/Programming/Development/CodingStandard/index.html#constcorrectness
+https://www.cprogramming.com/tutorial/const_correctness.html
 
 [cpp.return.early]
 
@@ -345,17 +360,17 @@ Exceptions:
 
 You can specifiy the allocator a container will use. Use this as an advantage to allocate memory on the stack instead of on the heap:
 
-    TInlineComponentArray<UPrimitiveComponent*> PrimComponents; 
-    Actor.GetComponents(PrimComponents);
+    TInlineComponentArray<UPrimitiveComponent*> primitive_components; 
+    Actor.GetComponents( primitive_components );
 
     using TCustomAlloc = TInlineAllocator<32>;
-	TArray<UActorComponent *, TCustomAlloc> LocalItems;
-	Actor.GetComponents<UActorComponent, TCustomAlloc>(LocalItems);
+	TArray<UActorComponent *, TCustomAlloc> local_items;
+	Actor.GetComponents<UActorComponent, TCustomAlloc>( local_items );
 
 Pre-allocate enough memory for the containers to avoid if possible re-allocations when the container grows:
 
-    PrimComponents.Reserve(64);
-    PrimComponents.Init(nullptr, 64);
+    primitive_components.Reserve( 64 );
+    primitive_components.Init( nullptr, 64 );
 
 You can expose the allocator as a template parameter to allow the caller to decide how memory is allocated:
 
@@ -441,6 +456,8 @@ You can even use *ensure* functions in if statements:
     }
 
     // do stuff when is_true is true
+
+See https://docs.unrealengine.com/en-US/Programming/Assertions/index.html
 
 [cpp.super]
 
@@ -601,7 +618,9 @@ Use portable aliases types for C++ types:
 [cpp.nullptr]
 
 Use `nullptr` and not `NULL`.
+
 https://en.cppreference.com/w/cpp/language/nullptr
+https://docs.unrealengine.com/en-US/Programming/Development/CodingStandard/#nullptr
 
 [cpp.text]
 
@@ -619,3 +638,21 @@ Encompass all string literal with the `TEXT` macro to avoid string conversion wh
 Use structures as data containers only. 
 
 They shouldn't contain any business logic beyond simple validation or need any destructors, because it's not possible to add the `UFUNCTION` macro on functions of a structure, to expose them to the blueprint world.
+
+[cpp.statements.switch]
+
+* Always use a `default` statement.
+* Always `break` each `case`. If you need a fall-through from a case to the next one, indicate it with a comment.
+
+See [cf.statements.switch]
+
+[cpp.statements.forranged]
+
+Use for-ranged loops instead of the traditional index loop. This helps make code more readable.
+
+    TArray< FVector > locations;
+
+    for ( const auto & location : locations )
+    {}
+
+https://docs.unrealengine.com/en-US/Programming/Development/CodingStandard/#range-basedfor

@@ -11,6 +11,7 @@ This document will cover
 Those documents are marked with tags between brackets, which allow you to quickly find the reference.
 
 Inspirations which were useful:
+* https://docs.unrealengine.com/en-US/Programming/Development/CodingStandard/index.html
 * https://github.com/Allar/ue4-style-guide
 * https://github.com/splash-damage/coding-standards
 * https://github.com/DaedalicEntertainment/unreal-coding-conventions

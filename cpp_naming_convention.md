@@ -34,16 +34,6 @@ Ex: `AMGCharacter`, `UMGGameInstance`.
 
 Use **PascalCase**.
 
-Declare each member on a separate line, repeating the type.
-This allows smaller diffs if you need to add `UPROPERTY` after, and you can comment out individual members.
-
-    struct FBar
-    {
-        int Index;
-        float Duration;
-        float Delay;
-    };
-
 [cpp.naming.functions]
 
 Use **PascalCase**.
@@ -60,7 +50,9 @@ Underscores are allowed for UE4 auto-generated functions, like replication funct
 
 Use **snake_case**.
 
-Write all arguments on one line. If you have too many arguments, see `[cpp.function.args.readability]`.
+[cpp.naming.functions.bool]
+
+Functions returning a `bool` should ask a question. `IsVisible()`, `AreDead()`.
 
 [cpp.naming.functions.ufunction]
 
@@ -73,19 +65,7 @@ If the function is a `UFUNCTION` with the `BlueprintImplementableEvent` or the `
 
 Use **snake_case**.
 
-Declare the variable on one line:
-
     const auto index = 0;
-
-Except when you declare multiple variables with the same type:
-
-    const AMGProp
-        * prop_1 = nullptr,
-        * prop_2 = nullptr;
-
-Use one assignment for each variable, don't combine them.
-
-This allows to comment out members individually very easily.
 
 [cpp.template.parameters]
 
@@ -187,72 +167,53 @@ Exception to that naming convention is for booleans. Don't repeat the subject fr
 
 Select the right DECLARE_DELEGATE macro: https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Delegates/index.html
 
-The delegate type must start with the letter `F`, then the project prefix, then the word `On` and end with `Delegate`:
+The delegate type must start with the letter `F`, then the project prefix, then the word `On` and end with `Delegate` : ex `FMGOnDamageTakenDelegate`
+
+The delegate class member must be the delegate type name, starting with `On` : `OnDamageTakenDelegate`
+
+The accessor to this class member must be the type name, starting with `On` and without the `Delegate`suffix: `OnDamageTaken()`
+
+Define two functions when exposing an event to a subclass. 
+1. The first function should be virtual and its name should begin with Notify : `NotifyDamageTaken`
+2. The second function should be a BlueprintImplementableEvent UFUNCTION and its name should begin with Receive: `ReceiveOnDamageTaken`. See `[cpp.naming.function.ufunction]`.
+
+The default implementation of the virtual function should be to call the `BlueprintImplementableEvent` function.
+
+Call the virtual function starting with `Notify` before broadcasting the event.
+
+    // Header file
 
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FMGOnDamageTakenDelegate, float, Damage );
 
-The delegate class member must be the delegate type name, starting with `On`:
-
-    class AMGCharacter
+    UCLASS()
+    class AMGClass
     {
+    public:
+
+        FMGOnDamageTakenDelegate & OnDamageTaken( float Duration ) const;
+
+    protected:
+
+        virtual void NotifyOnDamageTaken( float DamageTaken );
+
+    private:
+
+        UFUNCTION( BlueprintImplementableEvent, meta = ( AllowPrivateAccess = true, DisplayName = "OnDamageTaken" ) )
+        void ReceiveOnDamageTaken( float Distance );
+
         UPROPERTY( BlueprintAssignable )
         FMGOnDamageTakenDelegate OnDamageTakenDelegate;
     };
 
-The accessor to this class member must be the type name, starting with `On` and without the `Delegate`suffix:
-
-    class AMGCharacter
+    FORCEINLINE FMGOnDamageTakenDelegate & OnDamageTaken( float Duration ) const
     {
-        FMGOnDamageTakenDelegate & OnDamageTaken();
-    };
-
-Define two functions when exposing an event to a subclass. 
-1. The first function should be virtual and its name should begin with Notify. 
-2. The second function should be a BlueprintImplementableEvent UFUNCTION and its name should begin with Receive. See `[cpp.naming.function.ufunction]`.
-
-The default implementation of the virtual function should be to call the BlueprintImplementableEvent function:
-
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor);
-    
-	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName = "ActorBeginOverlap"), Category="Collision")
-	void ReceiveActorBeginOverlap(AActor* OtherActor);
-
-    // --
-
-    void AActor::NotifyActorBeginOverlap(AActor* OtherActor)
-    {   
-	    ReceiveActorBeginOverlap(OtherActor);
+        return OnDamageTakenDelegate;
     }
 
-Call the virtual function starting with `Notify` before broadcasting the event, if both are defined:
+    // Implementation file
 
-
-    FORMAT CORRECTLY BELOW
-
-
-
-
-
-
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHoatActorGraphConnectivityChangedSignature, AActor*, Source, AActor*, Target, float, Distance);
-
-    /** Event when the connectivity of an observed source vertex has changed. */
-    virtual void NotifyOnConnectivityChanged(AActor* Source, AActor* Target, float Distance);
-
-    /** Event when the connectivity of an observed source vertex has changed. */
-    UFUNCTION(BlueprintImplementableEvent, Category = Graph, meta = (DisplayName = "OnConnectivityChanged"))
-    void ReceiveOnConnectivityChanged(AActor* Source, AActor* Target, float Distance);
-
-    /** Event when the connectivity of an observed source vertex has changed. */
-    UPROPERTY(BlueprintAssignable)
-    FHoatActorGraphConnectivityChangedSignature OnConnectivityChanged;
-
-
-    void AHoatActorGraph::NotifyOnConnectivityChanged(AActor* Source, AActor* Target, float Distance)
+    void AMGClass::NotifyOnDamageTaken( float Distance )
     {
-    ReceiveOnConnectivityChanged(Source, Target, Distance);
-    OnConnectivityChanged.Broadcast(Source, Target, Distance);
-
-    HOAT_LOG(hoat, Log, TEXT("%s changed the connectivity of vertex %s: Distance to target %s changed to %f."),
-            *GetName(), *Source->GetName(), *Target->GetName(), Distance);
+        ReceiveOnDamageTaken( Distance );
+        OnDamageTakenDelegate.Broadcast( Distance );
     }
