@@ -140,17 +140,20 @@ Respect the rule of 3/5/0 http://en.cppreference.com/w/cpp/language/rule_of_thre
 
 [cpp.header.virtual]
 
-* Don't explicitly mark up virtual methods.
-* Always use the `override` specifier
+* Don't explicitly mark up overriden methods with the `virtual` keyword.
+* Do explicitely mark up overriden methods with the `override` keyword.
 * Don't use the `final` specifier.
-* Group overridden functions by the class that first defined them using begin/end comments
+* If you need to declare a destructor, make it `virtual`. See `[cpp.header.dtor.default]`
+* Group overridden functions by the class that first defined them using begin/end comments. This allows to quickly know which parent class declared the functions.
 
 <!-- -->
 	
     // Begin AActor override
-	virtual void BeginPlay() override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	void BeginPlay() override;
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	// End AActor override
+
+    virtual void Kill();
 
 [cpp.header.gc]
 
@@ -304,9 +307,16 @@ If possible, use TOptional, instead of the pattern "return a bool and update or 
 
 [cpp.return.rvo]
 
-:TODO:
+It's acceptable to return some complex types by copy to take advantage of Return Value Optimization ( `RVO` ) and Named Return Value Optimization (`NRVO`).
 
-https://www.wikiwand.com/en/Copy_elision
+https://en.cppreference.com/w/cpp/language/copy_elision
+
+See the implementation of `AActor::GetActorLocation`:
+
+     FVector GetActorLocation() const
+	{
+		return TemplateGetActorLocation(RootComponent);
+	}
 
 [cpp.comments]
 
@@ -488,6 +498,16 @@ The type deduction for the captures are quite convoluted
         // NotReference => `int`
     };
 
+[cpp.function.args.type]
+
+Pass complex types by `const reference` to avoid copies of the objects and keep the object immutability.
+
+Pass integral types by copy.
+
+Do NOT use the move operator `&&` unless you know what you're doing. This is useful for perfect forwarding in a lambda.
+
+https://scottmeyers.blogspot.com/2013/05/c14-lambdas-and-perfect-forwarding.html
+
 [cpp.function.args.default]
 
 If the function defines default arguments, keep them and comment them in the implementation file.
@@ -593,3 +613,9 @@ Encompass all string literal with the `TEXT` macro to avoid string conversion wh
 * Use the unreal `Cast` function to cast `UObject` pointers.
 * Use `const_cast` only when you have to
 * If you need to use `reinterpret_cast`, something is probably wrong.
+
+[cpp.struct]
+
+Use structures as data containers only. 
+
+They shouldn't contain any business logic beyond simple validation or need any destructors, because it's not possible to add the `UFUNCTION` macro on functions of a structure, to expose them to the blueprint world.
