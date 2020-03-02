@@ -1,12 +1,12 @@
 # C++ Naming Convention
 
-[cpp.naming.project_prefix]
+## [cpp.naming.project_prefix]
 
 Choose an uppercase short prefix for the game. This will be used in several places, like class names and file names.
 
 The project prefix in this document will be `MG` (for `MyGame`)
 
-[cpp.naming.file]
+## [cpp.naming.file]
 
 Use **PascalCase**.
 
@@ -14,7 +14,7 @@ The name of the file must match the name of the main type declared in it, withou
 
 The type `AMGCharacter` is defined in a file named `MGCharacter.h` and implemented in a file named `MGCharacter.cpp`.
 
-[cpp.naming.class]
+## [cpp.naming.class]
 
 Use **PascalCase**.
 
@@ -30,11 +30,11 @@ Ex: `AMGCharacter`, `UMGGameInstance`.
 * Enums are prefixed by E.
 * Most other classes are prefixed by F, though some subsystems use other letters.
 
-[cpp.naming.class.members]
+## [cpp.naming.class.members]
 
 Use **PascalCase**.
 
-[cpp.naming.functions]
+## [cpp.naming.functions]
 
 Use **PascalCase**.
 
@@ -46,22 +46,22 @@ Underscores are allowed for UE4 auto-generated functions, like replication funct
     void AMGCharacter::OnKilled_Implementation()
     {}
 
-[cpp.naming.functions.arguments]
+## [cpp.naming.functions.arguments]
 
 Use **snake_case**.
 
-[cpp.naming.functions.bool]
+## [cpp.naming.functions.bool]
 
 Functions returning a `bool` should ask a question. `IsVisible()`, `AreDead()`.
 
-[cpp.naming.functions.ufunction]
+## [cpp.naming.functions.ufunction]
 
 If the function is a `UFUNCTION` with the `BlueprintImplementableEvent` or the `BlueprintNativeEvent` keywords, prefix it with the `Receive` word:
 
     UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName = "ActorBeginOverlap"), Category="Collision")
     void ReceiveActorBeginOverlap(AActor* OtherActor);
 
-[cpp.naming.local.members]
+## [cpp.naming.local.members]
 
 Use **snake_case**.
 
@@ -75,7 +75,7 @@ Use **UPPER_CASE_WITH_UNDERSCORES**.
     void FillItems( const TArray< ITEM_TYPE > & items )
     { }
 
-[cpp.naming.constants]
+## [cpp.naming.constants]
 
 Use **PascalCase**.
 
@@ -83,13 +83,13 @@ See `[cpp.constants]`.
 
     static constexpr float Duration = 10.0f;
 
-[cpp.naming.acronyms]
+## [cpp.naming.acronyms]
 
 Use **UPPERCASE**.
 
 Ex: JSON / XML / VR / FPS / etc...
 
-[cpp.naming.meaning]
+## [cpp.naming.meaning]
 
 Don't use meaningless or truncated names.
 
@@ -98,7 +98,7 @@ Don't use meaningless or truncated names.
     {
     }
 
-[cpp.naming.booleans]
+## [cpp.naming.booleans]
 
 Don't prefix booleans with a _b_ like UE4 does.
 
@@ -111,7 +111,7 @@ Don't use negations in the name because they are hard to read.
     if ( !ItIsNotVisible )
     {}
 
-[cpp.naming.accessors]
+## [cpp.naming.accessors]
 
 Getters must start with `Get` and setters with `Set` and must end with the class member name.
 
@@ -163,7 +163,7 @@ Exception to that naming convention is for booleans. Don't repeat the subject fr
         ItIsDead = is_dead;
     }
 
-[cpp.naming.events]
+## [cpp.naming.events]
 
 Select the right DECLARE_DELEGATE macro: https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Delegates/index.html
 
@@ -175,7 +175,7 @@ The accessor to this class member must be the type name, starting with `On` and 
 
 Define two functions when exposing an event to a subclass. 
 1. The first function should be virtual and its name should begin with Notify : `NotifyDamageTaken`
-2. The second function should be a BlueprintImplementableEvent UFUNCTION and its name should begin with Receive: `ReceiveOnDamageTaken`. See `[cpp.naming.function.ufunction]`.
+2. The second function should be a BlueprintImplementableEvent UFUNCTION and its name should begin with Receive: ## `ReceiveOnDamageTaken`. See `[cpp.naming.function.ufunction]`.
 
 The default implementation of the virtual function should be to call the `BlueprintImplementableEvent` function.
 
