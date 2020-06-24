@@ -24,6 +24,10 @@ You can do that within the options of VS.
 
 You can auto-format the document with the shortcut : *CTRL+K, CTRL+D*
 
+## [cf.class.generated.body]
+
+Leave a newline after the `GENERATED_BODY` of the class.
+
 ## [cf.visibility]
 
 Class visibility modifiers have the same indentation as the encompassing class:
