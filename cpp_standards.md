@@ -15,24 +15,24 @@ The project must compile without any errors (obviously) and any warnings.
 Order should be taken care of by clang-format.
 
     #include "CorrespondingHeaderFile.h" // Corresponding header file
-
-    #include <CoreMinimal.h> // Engine headers using angle brackets
-    #include <Components/PrimitiveComponent.h>
     
     #include "GameHeader1.h" // Project headers using quotes
     #include "GameHeader2.h"
+
+    #include <CoreMinimal.h> // Engine headers using angle brackets
+    #include <Components/PrimitiveComponent.h>
 
 ## [cpp.header.incl]
 
 Order should be taken care of by clang-format.
 
     #pragma once
-
-    #include <CoreMinimal.h> // Engine headers using angle brackets
-    #include <Components/PrimitiveComponent.h>
     
     #include "GameHeader1.h" // Project headers using quotes
     #include "GameHeader2.h"
+
+    #include <CoreMinimal.h> // Engine headers using angle brackets
+    #include <Components/PrimitiveComponent.h>
 
     #include "CorrespondingHeaderFile.generated.h" // Last include is the generated UE4 file
 
