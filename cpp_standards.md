@@ -287,6 +287,8 @@ Use `const` on immutable variables or function arguments, on functions which don
 
 Never use `const` on a return type, as this inhibits move semantics for complex types, and will give compile warnings for built-in types. This rule only applies to the return type itself, not the target type of a pointer or reference being returned. 
 
+Don't add `const` on the function arguments in the function declaration. But add them in the implementation if the argument is immutable.
+
 https://docs.unrealengine.com/en-US/Programming/Development/CodingStandard/index.html#constcorrectness
 https://www.cprogramming.com/tutorial/const_correctness.html
 

@@ -91,12 +91,16 @@ Ex: JSON / XML / VR / FPS / etc...
 
 ## [cpp.naming.meaning]
 
-Don't use meaningless or truncated names.
+Don't use meaningless or truncated names. Always use names which express the full intent of the variable.
 
     // Don't
     for ( int i = 0; i < c; ++i )
     {
     }
+
+Exceptions to this rule are accepted for commonly used UE4 types, only if the variable has a short scope, like in a function. But not for class members.
+
+`PlayerController` can be referenced as `pc`, `GameMode` as `gm`, `GameInstance` as `gi`
 
 ## [cpp.naming.booleans]
 
