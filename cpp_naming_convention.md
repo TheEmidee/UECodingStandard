@@ -61,6 +61,12 @@ If the function is a `UFUNCTION` with the `BlueprintImplementableEvent` or the `
     UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName = "ActorBeginOverlap"), Category="Collision")
     void ReceiveActorBeginOverlap(AActor* OtherActor);
 
+## [cpp.naming.functions.replication]
+
+Follow the Quick Tips section of this page : https://docs.unrealengine.com/en-US/Gameplay/Networking/Actors/RPCs/index.html
+
+Prefix the functions used for replication by Server, Client or Multicast depending on the modifiers in the UFUNCTION macro.
+
 ## [cpp.naming.local.members]
 
 Use **snake_case**.
