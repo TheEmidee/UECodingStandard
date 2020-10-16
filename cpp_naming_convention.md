@@ -177,15 +177,15 @@ Exception to that naming convention is for booleans. Don't repeat the subject fr
 
 Select the right DECLARE_DELEGATE macro: https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Delegates/index.html
 
-The delegate type must start with the letter `F`, then the project prefix, then the word `On` and end with `Delegate` : ex `FMGOnDamageTakenDelegate`
+The delegate type must start with the letter `F`, then the project prefix, then the word `On` and end with `Delegate`: ex `FMGOnDamageTakenDelegate`
 
-The delegate class member must be the delegate type name, starting with `On` : `OnDamageTakenDelegate`
+The delegate class member must be the delegate type name, starting with `On`: `OnDamageTakenDelegate`
 
-The accessor to this class member must be the type name, starting with `On` and without the `Delegate`suffix: `OnDamageTaken()`
+The accessor to this class member must be the type name, starting with `On` and without the `Delegate` suffix: `OnDamageTaken()`
 
 Define two functions when exposing an event to a subclass. 
-1. The first function should be virtual and its name should begin with Notify : `NotifyDamageTaken`
-2. The second function should be a BlueprintImplementableEvent UFUNCTION and its name should begin with Receive: ## `ReceiveOnDamageTaken`. See `[cpp.naming.function.ufunction]`.
+1. The first function should be virtual and its name should begin with Notify: `NotifyDamageTaken`
+2. The second function should be a BlueprintImplementableEvent UFUNCTION and its name should begin with Receive: `ReceiveOnDamageTaken`. See `[cpp.naming.function.ufunction]`.
 
 The default implementation of the virtual function should be to call the `BlueprintImplementableEvent` function.
 
