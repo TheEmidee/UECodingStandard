@@ -204,12 +204,12 @@ Call the virtual function starting with `Notify` before broadcasting the event.
 
     protected:
 
+        UFUNCTION( BlueprintImplementableEvent, meta = ( DisplayName = "OnDamageTaken" ) )
+        void ReceiveOnDamageTaken( float Distance );
+
         virtual void NotifyOnDamageTaken( float DamageTaken );
 
     private:
-
-        UFUNCTION( BlueprintImplementableEvent, meta = ( AllowPrivateAccess = true, DisplayName = "OnDamageTaken" ) )
-        void ReceiveOnDamageTaken( float Distance );
 
         UPROPERTY( BlueprintAssignable )
         FMGOnDamageTakenDelegate OnDamageTakenDelegate;
