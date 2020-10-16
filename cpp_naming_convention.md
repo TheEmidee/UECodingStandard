@@ -193,37 +193,36 @@ Call the virtual function starting with `Notify` before broadcasting the event.
 
     // Header file
 
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FMGOnDamageTakenDelegate, float, Damage );
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FMGOnDamageTakenDelegate, float, damage );
 
     UCLASS()
     class AMGClass
     {
-    public:
+        GENERATED_BODY()
 
-        FMGOnDamageTakenDelegate & OnDamageTaken( float Duration ) const;
+    public:
+        FMGOnDamageTakenDelegate & OnDamageTaken( float duration ) const;
 
     protected:
-
         UFUNCTION( BlueprintImplementableEvent, meta = ( DisplayName = "OnDamageTaken" ) )
-        void ReceiveOnDamageTaken( float Distance );
+        void ReceiveOnDamageTaken( float distance );
 
-        virtual void NotifyOnDamageTaken( float DamageTaken );
+        virtual void NotifyOnDamageTaken( float damage_taken );
 
     private:
-
         UPROPERTY( BlueprintAssignable )
         FMGOnDamageTakenDelegate OnDamageTakenDelegate;
     };
 
-    FORCEINLINE FMGOnDamageTakenDelegate & OnDamageTaken( float Duration ) const
+    FORCEINLINE FMGOnDamageTakenDelegate & OnDamageTaken( float duration ) const
     {
         return OnDamageTakenDelegate;
     }
 
     // Implementation file
 
-    void AMGClass::NotifyOnDamageTaken( float Distance )
+    void AMGClass::NotifyOnDamageTaken( float distance )
     {
-        ReceiveOnDamageTaken( Distance );
-        OnDamageTakenDelegate.Broadcast( Distance );
+        ReceiveOnDamageTaken( distance );
+        OnDamageTakenDelegate.Broadcast( distance );
     }
