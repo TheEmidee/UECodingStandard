@@ -113,6 +113,8 @@ Exceptions are for replicated functions, which must be written below the replica
 
 Don't move functions around when you add or remove constness, or when you add the `UFUNCTION` macro. This helps code diffs to be minimal.
 
+Components must come first in the properties.
+
 ## [cpp.header.order.cache]
 
 * Try to order data members with cache and alignment in mind.
