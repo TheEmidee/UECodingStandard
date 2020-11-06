@@ -201,7 +201,7 @@ Call the virtual function starting with `Notify` before broadcasting the event.
         GENERATED_BODY()
 
     public:
-        FMGOnDamageTakenDelegate & OnDamageTaken( float duration ) const;
+        FMGOnDamageTakenDelegate & OnDamageTaken( float duration );
 
     protected:
         UFUNCTION( BlueprintImplementableEvent, meta = ( DisplayName = "OnDamageTaken" ) )
@@ -214,7 +214,7 @@ Call the virtual function starting with `Notify` before broadcasting the event.
         FMGOnDamageTakenDelegate OnDamageTakenDelegate;
     };
 
-    FORCEINLINE FMGOnDamageTakenDelegate & OnDamageTaken( float duration ) const
+    FORCEINLINE FMGOnDamageTakenDelegate & OnDamageTaken( float duration )
     {
         return OnDamageTakenDelegate;
     }
