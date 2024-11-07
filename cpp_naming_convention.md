@@ -110,11 +110,15 @@ Exceptions to this rule are accepted for commonly used UE4 types, only if the va
 
 ## [cpp.naming.booleans]
 
-Don't prefix booleans with a _b_ like UE4 does.
+Prefix boolean properties with a _b_ like UE does.
 
-The booleans must have the form `Subject`+`Verb`+ `Adjective` or `Verb`+`Subject`+`Adjective`.
+The booleans must have the form b`Verb`+ `Adjective`
 
-Ex: `ItIsDead` or `are_all_players_visible`.
+Ex: `bIsDead`
+
+For local variables, no `b` prefix but use a form `Verb`+`Subject`+`Adjective`.
+
+Ex: `are_all_players_visible`
 
 Don't use negations in the name because they are hard to read.
 
